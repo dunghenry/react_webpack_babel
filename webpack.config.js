@@ -1,7 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
-  entry: "./src/index.js",
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, "build"),
     filename: "bundle.js",
@@ -13,12 +13,33 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,         // <-- added `|jsx` here
         exclude: /node_modules/,
-        use: ["babel-loader"],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
       },
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
-      }
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
+      },
     ],
   },
   // pass all js files through Babel
