@@ -1,27 +1,28 @@
 import React from 'react';
 import img from './assets/images/img.jpg';
-import axios from 'axios';
 import './assets/styles/main.scss';
-import { useSelector, useDispatch } from 'react-redux';
-import { getTodos } from './store/actions/todoActions';
-const App = () => {
-    const dispatch = useDispatch();
+import { connect } from 'react-redux';
+import { getTodos, getTodoById } from './store/actions/todoActions';
+import { setUser } from './store/actions/authActions';
+const App = ({ getTodos, getTodoById, setUser }) => {
     React.useEffect(() => {
-        // dispatch({
-        //   type: 'SET_USER',
-        //   payload: {
-        //     id: 1,
-        //     name: 'John',
-        //   }
-        // })
-        getTodos(dispatch);
+        getTodos();
+        getTodoById(1);
+        setUser({
+            id: 1,
+            name: 'Joe',
+        });
     }, []);
+    const handleGetData = () => {
+        getTodoById(1);
+    };
     return (
         <div>
             <h1>React + Babel</h1>
+            <button onClick={handleGetData}>Get Data</button>
             <img src={img} />
         </div>
     );
 };
-
-export default App;
+const mapStateToProp = (state) => ({});
+export default connect(mapStateToProp, { getTodoById, getTodos, setUser })(App);
